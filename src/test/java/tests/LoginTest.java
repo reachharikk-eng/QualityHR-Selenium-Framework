@@ -1,16 +1,56 @@
 package tests;
 
 import base.BaseTest;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.LoginPage;
 
 public class LoginTest extends BaseTest {
 
-    @Test
+    @Test(priority = 1)
 
-    public void verifyLoginPageTitle() {
+    public void verifyValidLogin() {
 
-        String title = driver.getTitle();
+        LoginPage loginPage = new LoginPage(driver);
 
-        System.out.println("Page Title: " + title);
+        loginPage.login("Admin", "admin123");
+
+        String currentUrl = driver.getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains("dashboard"));
+
+        System.out.println("Valid Login Test Passed");
+    }
+
+    @Test(priority = 2)
+
+    public void verifyInvalidLogin() {
+
+        LoginPage loginPage = new LoginPage(driver);
+
+        loginPage.login("Admin", "wrongpassword");
+
+        String actualError = loginPage.getErrorMessage();
+
+        String expectedError = "Invalid credentials";
+
+        Assert.assertEquals(actualError, expectedError);
+
+        System.out.println("Invalid Login Test Passed");
+    }
+
+    @Test(priority = 3)
+
+    public void verifyEmptyFieldValidation() {
+
+        LoginPage loginPage = new LoginPage(driver);
+
+        loginPage.clickLogin();
+
+        String currentUrl = driver.getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains("login"));
+
+        System.out.println("Empty Validation Test Passed");
     }
 }
