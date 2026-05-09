@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import utils.WaitUtils;
 
 public class LoginPage {
 
@@ -23,7 +24,7 @@ public class LoginPage {
     By loginButton = By.xpath("//button[@type='submit']");
 
     By errorMessage =
-            By.xpath("//p[contains(text(),'Invalid credentials')]");
+            By.cssSelector(".oxd-alert-content-text");
 
     // Actions
 
@@ -53,6 +54,10 @@ public class LoginPage {
 
     public String getErrorMessage() {
 
-        return driver.findElement(errorMessage).getText();
+        WaitUtils waitUtils = new WaitUtils(driver);
+
+        return waitUtils
+                .waitForElementVisible(errorMessage)
+                .getText();
     }
 }
