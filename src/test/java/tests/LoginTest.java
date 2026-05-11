@@ -1,5 +1,5 @@
 package tests;
-
+import pages.DashboardPage;
 import base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -53,4 +53,25 @@ public class LoginTest extends BaseTest {
 
         System.out.println("Empty Validation Test Passed");
     }
+
+    @Test(priority = 4)
+
+    public void verifyLogout() {
+
+        LoginPage loginPage = new LoginPage(driver);
+
+        DashboardPage dashboardPage =
+                new DashboardPage(driver);
+
+        loginPage.login("Admin", "admin123");
+
+        dashboardPage.logout();
+
+        String currentUrl = driver.getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains("login"));
+
+        System.out.println("Logout Test Passed");
+    }
+
 }
